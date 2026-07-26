@@ -12,7 +12,8 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
 // ---- Security Headers & HTTPS Enforcement ----
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+if ((!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
+    $_SERVER['HTTPS'] = 'on';
     ini_set('session.cookie_secure', 1);
     header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 } elseif (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') === false && strpos($_SERVER['HTTP_HOST'], '127.0.0.1') === false) {
