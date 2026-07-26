@@ -3,7 +3,7 @@
  * FinancePro - Global Configuration
  * Handles: DB connection (mysqli, prepared-statement ready), session start,
  * error reporting, and site-wide constants.
- * Location: /FinancePro/config.php
+ * Location: /config.php
  */
 
 // ---- Error reporting ----
