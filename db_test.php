@@ -4,24 +4,22 @@ ini_set('display_errors', 1);
 
 echo "<h2>Railway DB Connection Diagnostic</h2><pre>";
 
-$hosts = [
-    'mysql.railway.internal',
-    'localhost',
-    '127.0.0.1'
-];
+$host = 'reseau.proxy.rlwy.net';
+$port = 42902;
+$user = 'root';
+$pass = 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb';
+$db   = 'railway';
 
-foreach ($hosts as $host) {
-    echo "\nTesting PDO connection to {$host}:3306...\n";
-    try {
-        $dsn = "mysql:host={$host};port=3306;dbname=railway;charset=utf8mb4";
-        $pdo = new PDO($dsn, 'root', 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb', [
-            PDO::ATTR_TIMEOUT => 3,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]);
-        echo "SUCCESS (PDO)! Connected to {$host}.\n";
-    } catch (Exception $e) {
-        echo "PDO Error on {$host}: " . $e->getMessage() . "\n";
-    }
+echo "Testing mysqli connection to {$host}:{$port}...\n";
+$conn = mysqli_init();
+$conn->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
+if (@$conn->real_connect($host, $user, $pass, $db, $port)) {
+    echo "SUCCESS! Connected to MySQL database.\n";
+    $res = $conn->query("SHOW TABLES");
+    echo "Tables count: " . $res->num_rows . "\n";
+    $conn->close();
+} else {
+    echo "Error (" . mysqli_connect_errno() . "): " . mysqli_connect_error() . "\n";
 }
 
 echo "</pre>";
