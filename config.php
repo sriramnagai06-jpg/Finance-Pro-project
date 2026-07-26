@@ -40,31 +40,19 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // ---- Database credentials ----
-$db_host = getenv('MYSQLHOST') ?: 'localhost';
-$db_user = getenv('MYSQLUSER') ?: 'root';
-$db_pass = getenv('MYSQLPASSWORD') ?: '';
-$db_name = getenv('MYSQLDATABASE') ?: 'financepro';
-$db_port = (int)(getenv('MYSQLPORT') ?: 3306);
-
-// Railway environment auto-detection
 if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID')) {
-    if (empty($db_host) || strpos($db_host, 'proxy.rlwy.net') !== false || $db_host === 'localhost') {
-        $db_host = 'mysql.railway.internal';
-        $db_port = 3306;
-    }
-    if (empty($db_pass)) {
-        $db_pass = 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb';
-    }
-    if ($db_name === 'financepro') {
-        $db_name = 'railway';
-    }
+    define('DB_HOST', 'mysql.railway.internal');
+    define('DB_USER', 'root');
+    define('DB_PASS', 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb');
+    define('DB_NAME', 'railway');
+    define('DB_PORT', 3306);
+} else {
+    define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
+    define('DB_USER', getenv('MYSQLUSER') ?: 'root');
+    define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
+    define('DB_NAME', getenv('MYSQLDATABASE') ?: 'financepro');
+    define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
 }
-
-define('DB_HOST', $db_host);
-define('DB_USER', $db_user);
-define('DB_PASS', $db_pass);
-define('DB_NAME', $db_name);
-define('DB_PORT', $db_port);
 
 // ---- Site constants ----
 define('SITE_NAME', 'FinancePro');
