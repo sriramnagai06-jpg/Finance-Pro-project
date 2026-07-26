@@ -1,0 +1,11 @@
+{
+    "name": "sriram/financepro",
+    "description": "FinancePro Personal Finance Management Web Application",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "ext-mysqli": "*",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*"
+    }
+}
