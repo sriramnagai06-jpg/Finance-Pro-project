@@ -6,9 +6,9 @@
  * Location: /FinancePro/config.php
  */
 
-// ---- Error reporting (hide errors in production) ----
+// ---- Error reporting ----
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 ini_set('log_errors', 1);
 
 // ---- Security Headers & HTTPS Enforcement ----
@@ -57,10 +57,10 @@ define('UPLOAD_PROFILE_DIR', __DIR__ . '/uploads/profile/');
 define('UPLOAD_LOGO_DIR', __DIR__ . '/uploads/logos/');
 
 // ---- Database connection (mysqli - used with prepared statements) ----
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
-
-if ($conn->connect_error) {
-    die('Database connection failed: ' . $conn->connect_error);
+$conn = mysqli_init();
+$conn->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
+if (!@$conn->real_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT)) {
+    die('Database connection failed (' . mysqli_connect_errno() . '): ' . mysqli_connect_error());
 }
 $conn->set_charset('utf8mb4');
 
