@@ -32,19 +32,24 @@ header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 header("Content-Security-Policy: default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval';");
 
 // ---- Database credentials ----
-if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID')) {
-    define('DB_HOST', 'mysql.railway.internal');
-    define('DB_USER', 'root');
-    define('DB_PASS', 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb');
-    define('DB_NAME', 'railway');
-    define('DB_PORT', 3306);
+$raw_host = getenv('MYSQLHOST');
+if (empty($raw_host) || strpos($raw_host, 'proxy.rlwy.net') !== false || $raw_host === 'localhost') {
+    // Default to Railway internal service DNS if on cloud server
+    if (file_exists('/.dockerenv') || !empty($_SERVER['DOCUMENT_ROOT'])) {
+        define('DB_HOST', 'mysql.railway.internal');
+        define('DB_PORT', 3306);
+    } else {
+        define('DB_HOST', 'localhost');
+        define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
+    }
 } else {
-    define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
-    define('DB_USER', getenv('MYSQLUSER') ?: 'root');
-    define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
-    define('DB_NAME', getenv('MYSQLDATABASE') ?: 'financepro');
+    define('DB_HOST', $raw_host);
     define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
 }
+
+define('DB_USER', getenv('MYSQLUSER') ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'railway');
 
 // ---- Database connection (mysqli) ----
 $conn = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
