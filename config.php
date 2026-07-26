@@ -31,14 +31,6 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
 header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 header("Content-Security-Policy: default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval';");
 
-// ---- Secure session settings (must be set BEFORE session_start) ----
-ini_set('session.cookie_httponly', 1);   // JS cannot read session cookie
-ini_set('session.use_strict_mode', 1);
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 // ---- Database credentials ----
 if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID')) {
     define('DB_HOST', 'mysql.railway.internal');
@@ -54,21 +46,27 @@ if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID')) {
     define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
 }
 
+// ---- Database connection (mysqli) ----
+$conn = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
+if ($conn->connect_error) {
+    die('Database connection failed: ' . $conn->connect_error . ' [Host: ' . DB_HOST . ']');
+}
+$conn->set_charset('utf8mb4');
+
+// ---- Secure session settings ----
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_strict_mode', 1);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // ---- Site constants ----
 define('SITE_NAME', 'FinancePro');
-// Base URL (files in root = '/')
 define('BASE_URL', '/');
 define('CURRENCY', 'Rs.');
 define('UPLOAD_PROFILE_DIR', __DIR__ . '/uploads/profile/');
 define('UPLOAD_LOGO_DIR', __DIR__ . '/uploads/logos/');
-
-// ---- Database connection (mysqli) ----
-$conn = mysqli_init();
-$conn->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
-if (!@$conn->real_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT)) {
-    die('Database connection failed (' . mysqli_connect_errno() . '): ' . mysqli_connect_error() . ' [Host: ' . DB_HOST . ':' . DB_PORT . ']');
-}
-$conn->set_charset('utf8mb4');
 
 /**
  * Sanitize any output string to prevent XSS.
