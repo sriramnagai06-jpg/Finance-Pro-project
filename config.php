@@ -32,22 +32,23 @@ header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 header("Content-Security-Policy: default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval';");
 
 // ---- Database credentials ----
-if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID') || getenv('RAILWAY_SERVICE_ID') || !empty($_ENV['RAILWAY_STATIC_URL'])) {
+// Check if running on Railway cloud environment
+$isRailway = (!empty($_ENV['RAILWAY_ENVIRONMENT']) || !empty($_ENV['RAILWAY_PROJECT_ID']) || !empty(getenv('RAILWAY_ENVIRONMENT')) || !empty(getenv('RAILWAY_PROJECT_ID')));
+
+if ($isRailway) {
     define('DB_HOST', 'mysql.railway.internal');
+    define('DB_USER', 'root');
+    define('DB_PASS', 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb');
+    define('DB_NAME', 'railway');
     define('DB_PORT', 3306);
 } else {
-    $raw_host = getenv('MYSQLHOST');
-    if (!empty($raw_host) && strpos($raw_host, 'proxy.rlwy.net') === false) {
-        define('DB_HOST', $raw_host);
-    } else {
-        define('DB_HOST', 'mysql.railway.internal');
-    }
+    // Local XAMPP development
+    define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
+    define('DB_USER', getenv('MYSQLUSER') ?: 'root');
+    define('DB_PASS', getenv('MYSQLPASSWORD') !== false ? getenv('MYSQLPASSWORD') : '');
+    define('DB_NAME', getenv('MYSQLDATABASE') ?: 'financepro');
     define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
 }
-
-define('DB_USER', getenv('MYSQLUSER') ?: 'root');
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb');
-define('DB_NAME', getenv('MYSQLDATABASE') ?: 'railway');
 
 // ---- Database connection (mysqli) ----
 $conn = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
