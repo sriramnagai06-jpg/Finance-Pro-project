@@ -6,9 +6,10 @@
  * Location: /FinancePro/config.php
  */
 
-// ---- Error reporting (turn off display_errors in production) ----
+// ---- Error reporting (hide errors in production) ----
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 
 // ---- Security Headers & HTTPS Enforcement ----
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
@@ -37,20 +38,17 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// ---- Database credentials (default XAMPP values) ----
-// DB_PORT is 3306 because that's the default MySQL port on a standard
-// XAMPP install. If your MySQL was configured to run on a different
-// port, change this value (and only this value) to match.
+// ---- Database credentials (InfinityFree Production) ----
 define('DB_HOST', 'sql213.infinityfree.com');
-define('DB_USER', 'if0_42444507');
-define('DB_PASS', 'Sa1rajaram');
-define('DB_NAME', 'if0_42444507_financepro');
+define('DB_USER', 'if0_42501853');
+define('DB_PASS', 'BJ4OjCaHXt');
+define('DB_NAME', 'if0_42501853_if0_42444507_financepro');
 define('DB_PORT', 3306);
 
 // ---- Site constants ----
 define('SITE_NAME', 'FinancePro');
-// Use relative base URL so the site works on any domain/device
-define('BASE_URL', '/FinancePro-fixed/');
+// Base URL for InfinityFree (files in root = '/', files in subfolder = '/subfolder/')
+define('BASE_URL', '/');
 define('CURRENCY', 'Rs.');
 define('UPLOAD_PROFILE_DIR', __DIR__ . '/uploads/profile/');
 define('UPLOAD_LOGO_DIR', __DIR__ . '/uploads/logos/');
