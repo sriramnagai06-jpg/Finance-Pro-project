@@ -40,27 +40,45 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // ---- Database credentials ----
-// Railway sets these env vars automatically when you add a MySQL service.
-// Falls back to XAMPP defaults for local development.
-define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
-define('DB_USER', getenv('MYSQLUSER') ?: 'root');
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
-define('DB_NAME', getenv('MYSQLDATABASE') ?: 'financepro');
-define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
+$db_host = getenv('MYSQLHOST') ?: 'localhost';
+$db_user = getenv('MYSQLUSER') ?: 'root';
+$db_pass = getenv('MYSQLPASSWORD') ?: '';
+$db_name = getenv('MYSQLDATABASE') ?: 'financepro';
+$db_port = (int)(getenv('MYSQLPORT') ?: 3306);
+
+// Railway environment auto-detection
+if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID')) {
+    if (empty($db_host) || strpos($db_host, 'proxy.rlwy.net') !== false || $db_host === 'localhost') {
+        $db_host = 'mysql.railway.internal';
+        $db_port = 3306;
+    }
+    if (empty($db_pass)) {
+        $db_pass = 'xvwuxAuOMvUItXEGUOzYWoDuIjPNGtjb';
+    }
+    if ($db_name === 'financepro') {
+        $db_name = 'railway';
+    }
+}
+
+define('DB_HOST', $db_host);
+define('DB_USER', $db_user);
+define('DB_PASS', $db_pass);
+define('DB_NAME', $db_name);
+define('DB_PORT', $db_port);
 
 // ---- Site constants ----
 define('SITE_NAME', 'FinancePro');
-// Base URL for InfinityFree (files in root = '/', files in subfolder = '/subfolder/')
+// Base URL (files in root = '/')
 define('BASE_URL', '/');
 define('CURRENCY', 'Rs.');
 define('UPLOAD_PROFILE_DIR', __DIR__ . '/uploads/profile/');
 define('UPLOAD_LOGO_DIR', __DIR__ . '/uploads/logos/');
 
-// ---- Database connection (mysqli - used with prepared statements) ----
+// ---- Database connection (mysqli) ----
 $conn = mysqli_init();
 $conn->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
 if (!@$conn->real_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT)) {
-    die('Database connection failed (' . mysqli_connect_errno() . '): ' . mysqli_connect_error());
+    die('Database connection failed (' . mysqli_connect_errno() . '): ' . mysqli_connect_error() . ' [Host: ' . DB_HOST . ':' . DB_PORT . ']');
 }
 $conn->set_charset('utf8mb4');
 
