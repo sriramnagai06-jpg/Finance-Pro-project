@@ -1,0 +1,205 @@
+/**
+ * FinancePro - Dark Mode Theme (Phase 5)
+ */
+
+body.dark-theme {
+    --fp-bg: #0f172a;
+    --fp-surface: #1e293b;
+    --fp-card-bg: #1e293b;
+    --fp-border: #334155;
+    --fp-text: #f8fafc;
+    --fp-text-dark: #f8fafc;
+    --fp-text-muted: #94a3b8;
+    
+    /* Tweaking accents slightly for dark mode contrast */
+    --fp-primary: #3b82f6; /* Lighter blue */
+    --fp-primary-hover: #2563eb;
+    --fp-accent: #10b981; /* Lighter green */
+    --fp-danger: #ef4444; /* Lighter red */
+}
+
+/* Base resets for dark mode */
+body.dark-theme {
+    background-color: var(--fp-bg);
+    color: var(--fp-text-dark);
+}
+
+/* Sidebar & Header */
+body.dark-theme .fp-sidebar {
+    background-color: var(--fp-surface);
+    border-right: 1px solid var(--fp-border);
+}
+body.dark-theme .fp-topbar {
+    background-color: var(--fp-surface);
+    border-bottom: 1px solid var(--fp-border);
+}
+
+/* Cards */
+body.dark-theme .summary-card,
+body.dark-theme .table-card,
+body.dark-theme .form-card,
+body.dark-theme .chart-card {
+    background: var(--fp-card-bg);
+    border: 1px solid var(--fp-border);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+}
+body.dark-theme .summary-card .card-label,
+body.dark-theme .form-section-title,
+body.dark-theme .table-card h3 {
+    color: var(--fp-text-dark);
+}
+
+/* Tables */
+body.dark-theme .fp-table th {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-bottom: 2px solid var(--fp-border);
+}
+body.dark-theme .fp-table td {
+    border-bottom: 1px solid var(--fp-border);
+}
+body.dark-theme .fp-table tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+}
+
+/* Forms */
+body.dark-theme .fp-input,
+body.dark-theme .fp-select,
+body.dark-theme .fp-textarea {
+    background: #0f172a;
+    border-color: var(--fp-border);
+    color: var(--fp-text-dark);
+}
+body.dark-theme .fp-input:focus,
+body.dark-theme .fp-select:focus,
+body.dark-theme .fp-textarea:focus {
+    border-color: var(--fp-primary);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+}
+
+/* Invoices Print (Force light mode on print) */
+@media print {
+    body.dark-theme {
+        --fp-bg: #f8fafc;
+        --fp-surface: #ffffff;
+        --fp-card-bg: #ffffff;
+        --fp-border: #e2e8f0;
+        --fp-text: #1e293b;
+        --fp-text-dark: #1b2430;
+        --fp-text-muted: #64748b;
+    }
+}
+
+/* ---- Navbar / Topbar full dark ---- */
+body.dark-theme .topbar-user,
+body.dark-theme .topbar-page-title { color: var(--fp-text-dark); }
+body.dark-theme .topbar-search input { background: #0f172a; color: var(--fp-text-dark); border-color: var(--fp-border); }
+body.dark-theme .topbar-search input::placeholder { color: var(--fp-text-muted); }
+
+/* ---- Sidebar full dark ---- */
+body.dark-theme .sidebar-section-label { color: #475569; }
+body.dark-theme .fp-sidebar a { color: #94a3b8; }
+body.dark-theme .fp-sidebar a:hover,
+body.dark-theme .fp-sidebar a.active { background: rgba(59,130,246,.15); color: #f8fafc; }
+body.dark-theme .brand-logo,
+body.dark-theme .user-name { color: var(--fp-text-dark); }
+body.dark-theme .brand-sub,
+body.dark-theme .user-role { color: var(--fp-text-muted); }
+body.dark-theme .sidebar-footer a { color: var(--fp-text-muted); }
+
+/* ---- Dropdowns ---- */
+body.dark-theme .dropdown-menu {
+    background: var(--fp-surface);
+    border: 1px solid var(--fp-border);
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+body.dark-theme .dropdown-item { color: var(--fp-text-dark); }
+body.dark-theme .dropdown-item:hover { background: rgba(59,130,246,.12); color: #f8fafc; }
+body.dark-theme .dropdown-divider { border-color: var(--fp-border); }
+
+/* ---- Modals ---- */
+body.dark-theme .modal-content { background: var(--fp-surface); border: 1px solid var(--fp-border); color: var(--fp-text-dark); }
+body.dark-theme .modal-header { border-bottom: 1px solid var(--fp-border); }
+body.dark-theme .modal-footer { border-top: 1px solid var(--fp-border); }
+body.dark-theme .modal-title { color: var(--fp-text-dark); }
+/* Custom modals (inline) */
+body.dark-theme #updateModal > div { background: var(--fp-surface); border: 1px solid var(--fp-border); }
+
+/* ---- Alerts ---- */
+body.dark-theme .fp-alert { border-left-color: var(--fp-primary); }
+body.dark-theme .fp-alert-success { background: rgba(16,185,129,.12); color: #6ee7b7; border-left-color: #10b981; }
+body.dark-theme .fp-alert-danger  { background: rgba(239,68,68,.12);  color: #fca5a5; border-left-color: #ef4444; }
+body.dark-theme .fp-alert-warning { background: rgba(245,158,11,.12); color: #fcd34d; border-left-color: #f59e0b; }
+body.dark-theme .fp-alert-info    { background: rgba(59,130,246,.12); color: #93c5fd; border-left-color: #3b82f6; }
+body.dark-theme .alert-danger     { background: rgba(239,68,68,.12);  color: #fca5a5; border-color: #ef4444; }
+
+/* ---- Badges ---- */
+body.dark-theme .badge-income  { background: rgba(16,185,129,.2);  color: #6ee7b7; }
+body.dark-theme .badge-expense { background: rgba(239,68,68,.2);   color: #fca5a5; }
+body.dark-theme .badge-fp      { border: 1px solid var(--fp-border); }
+
+/* ---- Progress bars ---- */
+body.dark-theme .fp-progress { background: rgba(255,255,255,.08); }
+
+/* ---- Buttons ---- */
+body.dark-theme .btn-fp-outline {
+    border-color: var(--fp-border);
+    color: var(--fp-text-dark);
+}
+body.dark-theme .btn-fp-outline:hover {
+    background: rgba(59,130,246,.12);
+    color: var(--fp-text-dark);
+}
+body.dark-theme .btn-toggle-pass { background: #0f172a; color: var(--fp-text-muted); border-color: var(--fp-border); }
+
+/* ---- Cards value / label text ---- */
+body.dark-theme .card-value { color: var(--fp-text-dark); }
+body.dark-theme .card-label { color: var(--fp-text-muted); }
+
+/* ---- Budget items ---- */
+body.dark-theme .budget-item {
+    background: var(--fp-surface);
+    border: 1px solid var(--fp-border);
+}
+body.dark-theme .budget-cat { color: var(--fp-text-dark); }
+body.dark-theme .budget-amounts { color: var(--fp-text-muted); }
+body.dark-theme .budget-footer span { color: var(--fp-text-muted); }
+
+/* ---- Accounting T-Format tables ---- */
+body.dark-theme .acc-table th,
+body.dark-theme .bs-table th,
+body.dark-theme .ff-table th,
+body.dark-theme .pl-table th { background: #0f172a; }
+body.dark-theme .acc-table td,
+body.dark-theme .bs-table td,
+body.dark-theme .ff-table td,
+body.dark-theme .pl-table td { color: var(--fp-text-dark); border-bottom-color: var(--fp-border); }
+body.dark-theme .acc-table .section-head td,
+body.dark-theme .bs-table .section-head td,
+body.dark-theme .ff-table .section-head td,
+body.dark-theme .pl-table .section-head td { background: #0f172a; }
+body.dark-theme .t-panel { background: var(--fp-card-bg); border-color: var(--fp-border); }
+
+/* ---- Chart cards text ---- */
+body.dark-theme .chart-card h3 { color: var(--fp-text-dark); }
+
+/* ---- Profile page ---- */
+body.dark-theme .profile-info-label { color: var(--fp-text-muted); }
+body.dark-theme .profile-info-value { color: var(--fp-text-dark); }
+
+/* ---- Reports ---- */
+body.dark-theme .report-card { background: var(--fp-card-bg); border-color: var(--fp-border); }
+body.dark-theme .report-card h4,
+body.dark-theme .report-card .report-label { color: var(--fp-text-dark); }
+
+/* ---- Input placeholder text ---- */
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder { color: #475569; }
+
+/* ---- Summary card hover ---- */
+body.dark-theme .summary-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+
+/* ---- Empty state text ---- */
+body.dark-theme .empty-state h3 { color: var(--fp-text-dark); }
+body.dark-theme .empty-state p  { color: var(--fp-text-muted); }
+body.dark-theme .empty-state i  { color: var(--fp-text-muted); }

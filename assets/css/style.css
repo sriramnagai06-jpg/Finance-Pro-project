@@ -1,0 +1,217 @@
+/* =====================================================================
+   FinancePro - Global Stylesheet
+   Location: /FinancePro/assets/css/style.css
+   Covers: CSS variables, typography, auth pages (login/register/forgot/reset)
+   Dashboard-specific styles are added in the Dashboard module (style-dashboard.css)
+   ===================================================================== */
+
+:root {
+    /* Professional finance-app palette */
+    --fp-navy: #0b1f3a;
+    --fp-navy-light: #142c52;
+    --fp-primary: #2457d9;
+    --fp-primary-dark: #173e9e;
+    --fp-accent: #17b978;      /* income / positive green */
+    --fp-danger: #e5484d;      /* expense / negative red */
+    --fp-warning: #f2a93b;
+    --fp-bg: #f4f7fc;
+    --fp-card-bg: #ffffff;
+    --fp-text-dark: #1b2430;
+    --fp-text-muted: #6b7688;
+    --fp-border: #e4e9f2;
+    --fp-radius: 16px;
+    --fp-shadow: 0 10px 30px rgba(15, 35, 75, 0.08);
+    --fp-shadow-hover: 0 16px 40px rgba(15, 35, 75, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--fp-bg);
+    color: var(--fp-text-dark);
+}
+
+a { text-decoration: none; }
+
+/* ---------------------------------------------------------------
+   AUTH LAYOUT (Login / Register / Forgot / Reset / Change Password)
+   ---------------------------------------------------------------- */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--fp-navy) 0%, var(--fp-primary) 100%);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-page::before,
+.auth-page::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+}
+.auth-page::before { width: 420px; height: 420px; top: -120px; left: -120px; }
+.auth-page::after   { width: 320px; height: 320px; bottom: -100px; right: -80px; }
+
+.auth-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 960px;
+    border-radius: var(--fp-radius);
+    overflow: hidden;
+    box-shadow: var(--fp-shadow-hover);
+    position: relative;
+    z-index: 1;
+}
+
+.auth-brand-panel {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-brand-panel h1 {
+    font-weight: 700;
+    font-size: 1.9rem;
+    margin-bottom: 12px;
+}
+
+.auth-brand-panel p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.auth-brand-panel .feature-list li {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+.auth-brand-panel .feature-list i {
+    color: var(--fp-accent);
+    margin-right: 8px;
+}
+
+.auth-form-panel {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(14px);
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-form-panel .logo {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--fp-primary-dark);
+    margin-bottom: 6px;
+}
+.auth-form-panel .logo i { color: var(--fp-accent); }
+
+.auth-form-panel h2 {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+}
+.auth-form-panel .subtitle {
+    color: var(--fp-text-muted);
+    font-size: 0.88rem;
+    margin-bottom: 24px;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--fp-text-dark);
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 1.5px solid var(--fp-border);
+    padding: 10px 14px;
+    font-size: 0.92rem;
+}
+.form-control:focus {
+    border-color: var(--fp-primary);
+    box-shadow: 0 0 0 3px rgba(36, 87, 217, 0.15);
+}
+
+.input-group .btn-toggle-pass {
+    border: 1.5px solid var(--fp-border);
+    border-left: none;
+    background: #fff;
+    color: var(--fp-text-muted);
+    border-radius: 0 10px 10px 0;
+}
+
+.btn-fp-primary {
+    background: linear-gradient(135deg, var(--fp-primary) 0%, var(--fp-primary-dark) 100%);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 11px 18px;
+    border-radius: 10px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-fp-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(36, 87, 217, 0.35);
+    color: #fff;
+}
+
+.auth-switch-link {
+    text-align: center;
+    font-size: 0.88rem;
+    margin-top: 18px;
+    color: var(--fp-text-muted);
+}
+.auth-switch-link a {
+    color: var(--fp-primary);
+    font-weight: 600;
+}
+
+.password-strength {
+    height: 5px;
+    border-radius: 4px;
+    background: var(--fp-border);
+    margin-top: 6px;
+    overflow: hidden;
+}
+.password-strength-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--fp-danger);
+    transition: width 0.25s ease, background 0.25s ease;
+}
+
+.form-hint {
+    font-size: 0.78rem;
+    color: var(--fp-text-muted);
+    margin-top: 4px;
+}
+
+/* Alert styling to match theme */
+.alert-fp {
+    border-radius: 10px;
+    font-size: 0.88rem;
+    border: none;
+}
+
+@media (max-width: 767.98px) {
+    .auth-brand-panel { display: none; }
+    .auth-form-panel { padding: 36px 26px; }
+}

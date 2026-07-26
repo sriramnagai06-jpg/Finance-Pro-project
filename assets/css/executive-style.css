@@ -1,0 +1,85 @@
+/* =====================================================================
+   FinancePro - Executive Styling & Dark Mode Additions
+   ===================================================================== */
+
+.quick-actions-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.quick-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--fp-primary, #2457d9) 0%, var(--fp-primary-dark, #173e9e) 100%);
+    box-shadow: 0 4px 12px rgba(36,87,217,0.25);
+    border: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+}
+
+.quick-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(36,87,217,0.4);
+    color: #ffffff;
+}
+
+/* Glassmorphism Card Style */
+.card-glass {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07) !important;
+    border-radius: 16px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card-glass:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.14) !important;
+}
+
+/* Rounded Cards */
+.rounded-card {
+    border-radius: 16px !important;
+    border: none !important;
+    box-shadow: 0 6px 20px rgba(15, 35, 75, 0.05) !important;
+    transition: all 0.3s ease !important;
+}
+
+.rounded-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 10px 25px rgba(15, 35, 75, 0.1) !important;
+}
+
+/* Metric Colors */
+.card-color-income { border-left: 4px solid #17b978 !important; }
+.card-color-expense { border-left: 4px solid #e5484d !important; }
+.card-color-cash { border-left: 4px solid #f2a93b !important; }
+.card-color-bank { border-left: 4px solid #3498db !important; }
+.card-color-profit { border-left: 4px solid #9b59b6 !important; }
+.card-color-gst { border-left: 4px solid #e67e22 !important; }
+.card-color-customers { border-left: 4px solid #1abc9c !important; }
+.card-color-invoices { border-left: 4px solid #34495e !important; }
+
+/* Filter & Action Bar */
+.filter-bar {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
