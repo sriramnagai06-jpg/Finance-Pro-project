@@ -32,18 +32,16 @@ header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 header("Content-Security-Policy: default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval';");
 
 // ---- Database credentials ----
-$raw_host = getenv('MYSQLHOST');
-if (empty($raw_host) || strpos($raw_host, 'proxy.rlwy.net') !== false || $raw_host === 'localhost') {
-    // Default to Railway internal service DNS if on cloud server
-    if (file_exists('/.dockerenv') || !empty($_SERVER['DOCUMENT_ROOT'])) {
-        define('DB_HOST', 'mysql.railway.internal');
-        define('DB_PORT', 3306);
-    } else {
-        define('DB_HOST', 'localhost');
-        define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
-    }
+if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID') || getenv('RAILWAY_SERVICE_ID') || !empty($_ENV['RAILWAY_STATIC_URL'])) {
+    define('DB_HOST', 'mysql.railway.internal');
+    define('DB_PORT', 3306);
 } else {
-    define('DB_HOST', $raw_host);
+    $raw_host = getenv('MYSQLHOST');
+    if (!empty($raw_host) && strpos($raw_host, 'proxy.rlwy.net') === false) {
+        define('DB_HOST', $raw_host);
+    } else {
+        define('DB_HOST', 'mysql.railway.internal');
+    }
     define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
 }
 
