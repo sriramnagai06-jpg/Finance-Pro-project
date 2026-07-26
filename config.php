@@ -38,12 +38,14 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// ---- Database credentials (InfinityFree Production) ----
-define('DB_HOST', 'sql213.infinityfree.com');
-define('DB_USER', 'if0_42501853');
-define('DB_PASS', 'BJ4OjCaHXt');
-define('DB_NAME', 'if0_42501853_if0_42444507_financepro');
-define('DB_PORT', 3306);
+// ---- Database credentials ----
+// Railway sets these env vars automatically when you add a MySQL service.
+// Falls back to XAMPP defaults for local development.
+define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
+define('DB_USER', getenv('MYSQLUSER') ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'financepro');
+define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
 
 // ---- Site constants ----
 define('SITE_NAME', 'FinancePro');
