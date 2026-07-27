@@ -51,7 +51,9 @@ $page_subtitle = 'System alerts and updates';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/style-dashboard.css">`r`n    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+    <link rel="stylesheet" href="../assets/css/style-dashboard.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
     <style>
         .notif-item { padding: 16px; border-bottom: 1px solid var(--fp-border); display: flex; gap: 16px; align-items: flex-start; transition: background 0.2s; }
         .notif-item:last-child { border-bottom: none; }

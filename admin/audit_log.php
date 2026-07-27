@@ -57,6 +57,7 @@ $page_subtitle = 'System activity history';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/style-dashboard.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
 </head>
 <body>
 <div class="fp-layout">
@@ -115,5 +116,6 @@ $page_subtitle = 'System activity history';
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
 </body>
 </html>
