@@ -180,8 +180,8 @@ a { text-decoration: none; color: inherit; }
 .fp-topbar {
     background: var(--fp-card-bg);
     border-bottom: 1px solid var(--fp-border);
-    padding: 0 28px;
-    height: 64px;
+    padding: 16px 28px;
+    height: auto; min-height: 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -726,7 +726,7 @@ a { text-decoration: none; color: inherit; }
     .fp-table th, .fp-table td { border-bottom: 1px solid #ccc !important; }
     
     body::before {
-        content: "FinancePro — B.Com (CA) Final Project";
+        content: "FinancePro  B.Com (CA) Final Project";
         display: block;
         text-align: center;
         font-weight: bold;

@@ -5,8 +5,14 @@
  */
 $page_subtitle = $page_subtitle ?? date('l, d F Y');
 ?>
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
 <header class="fp-topbar">
     <div class="topbar-title">
+        <button class="sidebar-toggle-btn d-md-none" onclick="toggleSidebar()" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+        </button>
         <h1><?= e($page_title ?? 'FinancePro') ?></h1>
         <p><?= e($page_subtitle) ?></p>
     </div>

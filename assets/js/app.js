@@ -5,6 +5,14 @@ function toggleTheme() {
     updateThemeIcon(isDark);
 }
 
+// Sidebar toggle function
+function toggleSidebar() {
+    const sidebar = document.getElementById('fpSidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (sidebar) sidebar.classList.toggle('show');
+    if (overlay) overlay.classList.toggle('show');
+}
+
 function updateThemeIcon(isDark) {
     const icon = document.querySelector('.btn-icon[title="Toggle Dark Mode"] i');
     if (icon) {
