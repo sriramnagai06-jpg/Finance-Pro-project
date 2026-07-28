@@ -4,7 +4,7 @@
  * Expects: $page_title, $page_subtitle (optional)
  */
 $page_subtitle = $page_subtitle ?? date('l, d F Y');
-
+?>
 <header class="fp-topbar">
     <div class="topbar-title">
         <button class="sidebar-toggle-btn d-lg-none" onclick="toggleSidebar(event)" aria-label="Toggle Navigation">
