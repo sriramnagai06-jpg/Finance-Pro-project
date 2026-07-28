@@ -23,21 +23,24 @@ function updateThemeIcon(isDark) {
 // ---------------------------------------------------------------------
 // Global Mobile Sidebar Controls
 // ---------------------------------------------------------------------
-function toggleSidebar(forceState) {
+function toggleSidebar(arg) {
+    if (arg && typeof arg.preventDefault === 'function') {
+        arg.preventDefault();
+    }
     const sidebar = document.getElementById('fpSidebar');
     const overlay = document.querySelector('.sidebar-overlay');
     if (!sidebar) return;
 
-    const isOpen = sidebar.classList.contains('show');
-    const shouldOpen = (typeof forceState === 'boolean') ? forceState : !isOpen;
+    const isOpen = sidebar.classList.contains('show') || sidebar.classList.contains('open');
+    const forceState = (typeof arg === 'boolean') ? arg : !isOpen;
 
-    if (shouldOpen) {
-        sidebar.classList.add('show');
-        if (overlay) overlay.classList.add('show');
+    if (forceState) {
+        sidebar.classList.add('show', 'open');
+        if (overlay) overlay.classList.add('show', 'open');
         document.body.classList.add('sidebar-open');
     } else {
-        sidebar.classList.remove('show');
-        if (overlay) overlay.classList.remove('show');
+        sidebar.classList.remove('show', 'open');
+        if (overlay) overlay.classList.remove('show', 'open');
         document.body.classList.remove('sidebar-open');
     }
 }
@@ -50,7 +53,7 @@ function openSidebar() {
     toggleSidebar(true);
 }
 
-// Expose globally on window for inline event handlers and cross-script calls
+// Expose globally on window for cross-script calls
 window.toggleSidebar = toggleSidebar;
 window.closeSidebar = closeSidebar;
 window.openSidebar = openSidebar;
@@ -60,43 +63,49 @@ window.toggleTheme = toggleTheme;
 // Event Delegation & Global Event Listeners
 // ---------------------------------------------------------------------
 document.addEventListener('click', function (e) {
-    // 1. Sidebar Nav Link Click -> Close sidebar automatically after selecting an item
-    const navLink = e.target.closest('#fpSidebar .sidebar-nav a, #fpSidebar .sidebar-footer a');
-    if (navLink) {
-        closeSidebar();
-        return;
-    }
-
-    // 2. Hamburger button / Toggle button click
+    // 1. Hamburger button / Toggle button click
     const toggleBtn = e.target.closest('.sidebar-toggle-btn');
     if (toggleBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleSidebar();
+        if (!toggleBtn.dataset.toggledInTick) {
+            toggleBtn.dataset.toggledInTick = "true";
+            setTimeout(() => { delete toggleBtn.dataset.toggledInTick; }, 100);
+            e.preventDefault();
+            toggleSidebar();
+        }
         return;
     }
 
-    // 3. Close button inside sidebar (X icon)
+    // 2. Close button inside sidebar (X icon)
     const closeBtn = e.target.closest('.sidebar-close-btn');
     if (closeBtn) {
         e.preventDefault();
-        e.stopPropagation();
         closeSidebar();
         return;
     }
 
-    // 4. Overlay click (outside sidebar click)
+    // 3. Overlay click (outside sidebar click)
     const overlay = e.target.closest('.sidebar-overlay');
     if (overlay) {
         e.preventDefault();
         closeSidebar();
         return;
     }
+
+    // 4. Sidebar Nav Link Click -> Close sidebar automatically after selecting an item
+    const navLink = e.target.closest('#fpSidebar .sidebar-nav a, #fpSidebar .sidebar-footer a');
+    if (navLink) {
+        closeSidebar();
+        return;
+    }
 });
 
-// Reset sidebar state on page load and back/forward cache (bfcache) restore
+// Reset sidebar state cleanly on page load and back/forward cache (bfcache) restore
 function resetMobileNav() {
-    closeSidebar();
+    const sidebar = document.getElementById('fpSidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (sidebar) sidebar.classList.remove('show', 'open');
+    if (overlay) overlay.classList.remove('show', 'open');
+    document.body.classList.remove('sidebar-open');
 }
 
 if (document.readyState === 'loading') {
@@ -106,13 +115,19 @@ if (document.readyState === 'loading') {
 }
 
 window.addEventListener('pageshow', function () {
-    closeSidebar();
+    resetMobileNav();
 });
 
-// Accessibility: Pressing ESC closes the sidebar
+// Accessibility: Pressing ESC closes the sidebar, pressing / toggles sidebar
 document.addEventListener('keydown', function (e) {
+    const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+    const isEditing = activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select' || document.activeElement.isContentEditable;
+
     if (e.key === 'Escape') {
         closeSidebar();
+    } else if (e.key === '/' && !isEditing) {
+        e.preventDefault();
+        toggleSidebar();
     }
 });
 

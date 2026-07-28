@@ -124,5 +124,6 @@ new Chart(document.getElementById('adminTrendChart').getContext('2d'),{
     }
 });
 </script>
-<script src="../assets/js/app.js"></script>`r`n</body>
+<script src="../assets/js/app.js"></script>
+</body>
 </html>

@@ -285,5 +285,6 @@ function addRow(){
     tbody.appendChild(row);
 }
 </script>
-<script src="../assets/js/app.js"></script>`r`n</body>
+<script src="../assets/js/app.js"></script>
+</body>
 </html>

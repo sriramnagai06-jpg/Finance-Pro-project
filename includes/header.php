@@ -6,18 +6,20 @@
 $page_subtitle = $page_subtitle ?? date('l, d F Y');
 ?>
 <!-- Mobile Sidebar Overlay -->
-<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <header class="fp-topbar">
     <div class="topbar-title">
-        <button class="sidebar-toggle-btn d-md-none" onclick="toggleSidebar()" aria-label="Toggle Navigation">
+        <button class="sidebar-toggle-btn d-lg-none" onclick="toggleSidebar(event)" aria-label="Toggle Navigation">
             <i class="fa-solid fa-bars"></i>
         </button>
-        <h1><?= e($page_title ?? 'FinancePro') ?></h1>
-        <p><?= e($page_subtitle) ?></p>
+        <div class="topbar-title-text">
+            <h1><?= e($page_title ?? 'FinancePro') ?></h1>
+            <p><?= e($page_subtitle) ?></p>
+        </div>
     </div>
     <div class="topbar-actions">
-        <span class="topbar-date"><i class="fa-regular fa-calendar"></i> <?= date('d M Y') ?></span>
+        <span class="topbar-date d-none d-md-inline-flex"><i class="fa-regular fa-calendar"></i> <?= date('d M Y') ?></span>
         
         <button onclick="toggleTheme()" class="btn-icon" title="Toggle Dark Mode" style="background:transparent; border:none; cursor:pointer;">
             <i class="fa-solid fa-moon"></i>

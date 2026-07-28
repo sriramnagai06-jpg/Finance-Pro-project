@@ -11,7 +11,7 @@ $user_initial = strtoupper(substr($_SESSION['full_name'] ?? 'U', 0, 1));
     <div class="sidebar-brand">
         <div class="brand-logo"><i class="fa-solid fa-chart-pie"></i> FinancePro</div>
         <div class="brand-sub">Personal Finance Manager</div>
-        <button class="sidebar-close-btn d-lg-none" onclick="toggleSidebar()" aria-label="Close Navigation" style="position:absolute; top:15px; right:15px; background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">
+        <button class="sidebar-close-btn d-lg-none" aria-label="Close Navigation" style="position:absolute; top:15px; right:15px; background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>

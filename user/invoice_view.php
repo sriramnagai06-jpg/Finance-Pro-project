@@ -40,7 +40,15 @@ $user_info = $user_stmt->get_result()->fetch_assoc(); $user_stmt->close();
     <?php include '../includes/sidebar.php'; ?>
     <div class="fp-main">
         <header class="fp-topbar no-print">
-            <div class="topbar-title"><h1><?=e($inv['invoice_number'])?></h1><p>Invoice Details</p></div>
+            <div class="topbar-title">
+                <button class="sidebar-toggle-btn d-lg-none" onclick="toggleSidebar(event)" aria-label="Toggle Navigation">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="topbar-title-text">
+                    <h1><?=e($inv['invoice_number'])?></h1>
+                    <p>Invoice Details</p>
+                </div>
+            </div>
             <div class="topbar-actions">
                 <a href="invoices.php" class="btn-fp btn-fp-outline btn-fp-sm"><i class="fa-solid fa-arrow-left"></i> Back</a>
                 <button class="btn-fp btn-fp-primary btn-fp-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> Print / PDF</button>
@@ -120,5 +128,6 @@ $user_info = $user_stmt->get_result()->fetch_assoc(); $user_stmt->close();
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/js/app.js"></script>`r`n</body>
+<script src="../assets/js/app.js"></script>
+</body>
 </html>

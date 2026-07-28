@@ -203,3 +203,19 @@ body.dark-theme .summary-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.4); }
 body.dark-theme .empty-state h3 { color: var(--fp-text-dark); }
 body.dark-theme .empty-state p  { color: var(--fp-text-muted); }
 body.dark-theme .empty-state i  { color: var(--fp-text-muted); }
+
+/* ---- Topbar action buttons & date dark theme ---- */
+body.dark-theme .topbar-actions .btn-icon {
+    background: #0f172a;
+    border-color: var(--fp-border);
+    color: var(--fp-text-muted);
+}
+body.dark-theme .topbar-actions .btn-icon:hover {
+    color: var(--fp-primary);
+    border-color: var(--fp-primary);
+}
+body.dark-theme .topbar-date {
+    background: #0f172a;
+    border-color: var(--fp-border);
+    color: var(--fp-text-muted);
+}

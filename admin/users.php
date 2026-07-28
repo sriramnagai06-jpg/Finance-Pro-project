@@ -135,5 +135,6 @@ $active_page='admin'; $page_title='Manage Users'; $page_subtitle='View, block, a
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/js/app.js"></script>`r`n</body>
+<script src="../assets/js/app.js"></script>
+</body>
 </html>

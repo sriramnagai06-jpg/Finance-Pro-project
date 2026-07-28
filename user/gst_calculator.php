@@ -233,5 +233,6 @@ document.querySelectorAll('input[name="gst_type"]').forEach(r => r.addEventListe
     calculate();
 }));
 </script>
-<script src="../assets/js/app.js"></script>`r`n</body>
+<script src="../assets/js/app.js"></script>
+</body>
 </html>
