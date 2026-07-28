@@ -51,11 +51,34 @@ if ($isRailway) {
 }
 
 // ---- Database connection (mysqli) ----
+@mysqli_report(MYSQLI_REPORT_OFF);
 $conn = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 if ($conn->connect_error) {
     die('Database connection failed: ' . $conn->connect_error . ' [Host: ' . DB_HOST . ']');
 }
 $conn->set_charset('utf8mb4');
+
+// Auto-run schema migration if tables are missing
+$checkTable = @$conn->query("SHOW TABLES LIKE 'users'");
+if ($checkTable && $checkTable->num_rows === 0) {
+    $migFiles = [
+        __DIR__ . '/database/financepro.sql',
+        __DIR__ . '/database/schema_extension.sql'
+    ];
+    foreach ($migFiles as $file) {
+        if (file_exists($file)) {
+            $sqlContent = file_get_contents($file);
+            $sqlContent = preg_replace('/--.*$/m', '', $sqlContent);
+            $sqlContent = preg_replace('/\/\*.*?\*\//s', '', $sqlContent);
+            $queries = array_filter(array_map('trim', explode(';', $sqlContent)));
+            foreach ($queries as $q) {
+                if (!empty($q)) {
+                    @$conn->query($q);
+                }
+            }
+        }
+    }
+}
 
 // ---- Secure session settings ----
 ini_set('session.cookie_httponly', 1);

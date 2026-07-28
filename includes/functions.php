@@ -102,9 +102,14 @@ function format_date(string $date): string {
 /** Generates a unique invoice number like INV-2026-0007 */
 function generate_invoice_number(mysqli $conn): string {
     $year = date('Y');
-    $result = $conn->query("SELECT COUNT(*) AS cnt FROM invoices WHERE YEAR(invoice_date) = $year");
-    $row = $result->fetch_assoc();
-    $next = $row['cnt'] + 1;
+    $cnt = 0;
+    try {
+        $result = $conn ? $conn->query("SELECT COUNT(*) AS cnt FROM invoices WHERE YEAR(invoice_date) = $year") : null;
+        if ($result && $row = $result->fetch_assoc()) {
+            $cnt = (int)($row['cnt'] ?? 0);
+        }
+    } catch (\Throwable $t) {}
+    $next = $cnt + 1;
     return sprintf('INV-%s-%04d', $year, $next);
 }
 
@@ -112,14 +117,17 @@ function generate_invoice_number(mysqli $conn): string {
  * MODULE 14: SECURITY (PHASE 2) & LOGGING
  * ------------------------------------------------------------------ */
 function audit_log($conn, $user_id, $action, $table, $record_id, $desc) {
+    if (!$conn) return;
     $ip = $_SERVER['REMOTE_ADDR'] ?? null;
-    // Supports both 'action_type' (legacy) and 'action' column names
-    $stmt = $conn->prepare("INSERT INTO audit_log (user_id, action_type, table_name, record_id, description, ip_address) VALUES (?, ?, ?, ?, ?, ?)");
-    if ($stmt) {
-        $stmt->bind_param('ississ', $user_id, $action, $table, $record_id, $desc, $ip);
-        $stmt->execute();
-        $stmt->close();
-    }
+    try {
+        // Supports both 'action_type' (legacy) and 'action' column names
+        $stmt = $conn->prepare("INSERT INTO audit_log (user_id, action_type, table_name, record_id, description, ip_address) VALUES (?, ?, ?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param('ississ', $user_id, $action, $table, $record_id, $desc, $ip);
+            $stmt->execute();
+            $stmt->close();
+        }
+    } catch (\Throwable $t) {}
 }
 
 // XSS Protection Wrapper
@@ -137,12 +145,15 @@ function sanitize_output($data) {
  * MODULE 11: NOTIFICATIONS (PHASE 3)
  * ------------------------------------------------------------------ */
 function add_notification($conn, $user_id, $type, $title, $message) {
-    $stmt = $conn->prepare("INSERT INTO notifications (user_id, type, title, message) VALUES (?, ?, ?, ?)");
-    if ($stmt) {
-        $stmt->bind_param('isss', $user_id, $type, $title, $message);
-        $stmt->execute();
-        $stmt->close();
-    }
+    if (!$conn) return;
+    try {
+        $stmt = $conn->prepare("INSERT INTO notifications (user_id, type, title, message) VALUES (?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param('isss', $user_id, $type, $title, $message);
+            $stmt->execute();
+            $stmt->close();
+        }
+    } catch (\Throwable $t) {}
 }
 
 function get_unread_notifications_count($conn, $user_id) {
