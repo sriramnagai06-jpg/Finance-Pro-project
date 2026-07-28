@@ -4,9 +4,6 @@
  * Expects: $page_title, $page_subtitle (optional)
  */
 $page_subtitle = $page_subtitle ?? date('l, d F Y');
-?>
-<!-- Mobile Sidebar Overlay -->
-<div class="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <header class="fp-topbar">
     <div class="topbar-title">

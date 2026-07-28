@@ -27,12 +27,25 @@ function toggleSidebar(arg) {
     if (arg && typeof arg.preventDefault === 'function') {
         arg.preventDefault();
     }
+    if (arg && typeof arg.stopPropagation === 'function') {
+        arg.stopPropagation();
+    }
+
     const sidebar = document.getElementById('fpSidebar');
     const overlay = document.querySelector('.sidebar-overlay');
     if (!sidebar) return;
 
     const isOpen = sidebar.classList.contains('show') || sidebar.classList.contains('open');
     const forceState = (typeof arg === 'boolean') ? arg : !isOpen;
+
+    // Throttle duplicate toggle calls within 150ms unless forceState is explicitly setting a target boolean state
+    if (typeof arg !== 'boolean') {
+        const now = Date.now();
+        if (window._fpLastSidebarToggleTime && (now - window._fpLastSidebarToggleTime < 150)) {
+            return;
+        }
+        window._fpLastSidebarToggleTime = now;
+    }
 
     if (forceState) {
         sidebar.classList.add('show', 'open');
@@ -66,12 +79,9 @@ document.addEventListener('click', function (e) {
     // 1. Hamburger button / Toggle button click
     const toggleBtn = e.target.closest('.sidebar-toggle-btn');
     if (toggleBtn) {
-        if (!toggleBtn.dataset.toggledInTick) {
-            toggleBtn.dataset.toggledInTick = "true";
-            setTimeout(() => { delete toggleBtn.dataset.toggledInTick; }, 100);
-            e.preventDefault();
-            toggleSidebar();
-        }
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSidebar(e);
         return;
     }
 
@@ -79,6 +89,7 @@ document.addEventListener('click', function (e) {
     const closeBtn = e.target.closest('.sidebar-close-btn');
     if (closeBtn) {
         e.preventDefault();
+        e.stopPropagation();
         closeSidebar();
         return;
     }
@@ -87,6 +98,7 @@ document.addEventListener('click', function (e) {
     const overlay = e.target.closest('.sidebar-overlay');
     if (overlay) {
         e.preventDefault();
+        e.stopPropagation();
         closeSidebar();
         return;
     }

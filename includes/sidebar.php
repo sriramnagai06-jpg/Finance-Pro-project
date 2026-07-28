@@ -5,8 +5,9 @@
  * Expects: $active_page variable set in each page (e.g. 'dashboard', 'income', etc.)
  */
 $active_page = $active_page ?? '';
-$user_initial = strtoupper(substr($_SESSION['full_name'] ?? 'U', 0, 1));
-?>
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
 <nav class="fp-sidebar" id="fpSidebar">
     <div class="sidebar-brand">
         <div class="brand-logo"><i class="fa-solid fa-chart-pie"></i> FinancePro</div>
