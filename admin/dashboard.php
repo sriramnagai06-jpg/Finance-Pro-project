@@ -6,24 +6,47 @@ require_once '../config.php';
 require_once '../includes/functions.php';
 require_admin();
 
+// Safe query helpers
+function admin_val($conn, $sql) {
+    if (!$conn) return 0;
+    try {
+        $res = $conn->query($sql);
+        if ($res && $row = $res->fetch_row()) {
+            return $row[0] ?? 0;
+        }
+    } catch (\Throwable $t) {}
+    return 0;
+}
+
+function admin_all($conn, $sql) {
+    if (!$conn) return [];
+    try {
+        $res = $conn->query($sql);
+        if ($res) {
+            return $res->fetch_all(MYSQLI_ASSOC) ?: [];
+        }
+    } catch (\Throwable $t) {}
+    return [];
+}
+
 // Stats
-$total_users    = $conn->query("SELECT COUNT(*) FROM users WHERE role='user'")->fetch_row()[0];
-$active_users   = $conn->query("SELECT COUNT(*) FROM users WHERE role='user' AND status='active'")->fetch_row()[0];
-$blocked_users  = $conn->query("SELECT COUNT(*) FROM users WHERE status='blocked'")->fetch_row()[0];
-$total_income   = $conn->query("SELECT COALESCE(SUM(amount),0) FROM income")->fetch_row()[0];
-$total_expense  = $conn->query("SELECT COALESCE(SUM(amount),0) FROM expenses")->fetch_row()[0];
-$total_invoices = $conn->query("SELECT COUNT(*) FROM invoices")->fetch_row()[0];
+$total_users    = admin_val($conn, "SELECT COUNT(*) FROM users WHERE role='user'");
+$active_users   = admin_val($conn, "SELECT COUNT(*) FROM users WHERE role='user' AND status='active'");
+$blocked_users  = admin_val($conn, "SELECT COUNT(*) FROM users WHERE status='blocked'");
+$total_income   = admin_val($conn, "SELECT COALESCE(SUM(amount),0) FROM income");
+$total_expense  = admin_val($conn, "SELECT COALESCE(SUM(amount),0) FROM expenses");
+$total_invoices = admin_val($conn, "SELECT COUNT(*) FROM invoices");
 
 // Recent users
-$recent_users = $conn->query("SELECT user_id, full_name, email, role, status, created_at FROM users ORDER BY created_at DESC LIMIT 10")->fetch_all(MYSQLI_ASSOC);
+$recent_users = admin_all($conn, "SELECT user_id, full_name, email, role, status, created_at FROM users ORDER BY created_at DESC LIMIT 10");
 
 // Monthly income/expense for chart (last 6 months)
 $m_labels=[]; $m_inc=[]; $m_exp=[];
 for($i=5;$i>=0;$i--) {
     $m=date('n',strtotime("-$i months")); $y=date('Y',strtotime("-$i months"));
     $m_labels[]=date('M',strtotime("-$i months"));
-    $m_inc[] = (float)$conn->query("SELECT COALESCE(SUM(amount),0) FROM income WHERE MONTH(income_date)=$m AND YEAR(income_date)=$y")->fetch_row()[0];
-    $m_exp[] = (float)$conn->query("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE MONTH(expense_date)=$m AND YEAR(expense_date)=$y")->fetch_row()[0];
+    $m_inc[] = (float)admin_val($conn, "SELECT COALESCE(SUM(amount),0) FROM income WHERE MONTH(income_date)=$m AND YEAR(income_date)=$y");
+    $m_exp[] = (float)admin_val($conn, "SELECT COALESCE(SUM(amount),0) FROM expenses WHERE MONTH(expense_date)=$m AND YEAR(expense_date)=$y");
 }
 
 $active_page='admin'; $page_title='Admin Dashboard'; $page_subtitle='System Overview';
