@@ -67,7 +67,18 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // ---- Site constants ----
 define('SITE_NAME', 'FinancePro');
-define('BASE_URL', '/');
+
+if (!defined('BASE_URL')) {
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    $dir = str_replace('\\', '/', dirname($scriptName));
+    if ($dir === '/' || $dir === '\\' || $dir === '.') {
+        $baseUrl = '/';
+    } else {
+        $dir = preg_replace('#/(user|admin|includes)$#i', '', $dir);
+        $baseUrl = rtrim($dir, '/') . '/';
+    }
+    define('BASE_URL', $baseUrl);
+}
 define('CURRENCY', 'Rs.');
 define('UPLOAD_PROFILE_DIR', __DIR__ . '/uploads/profile/');
 define('UPLOAD_LOGO_DIR', __DIR__ . '/uploads/logos/');

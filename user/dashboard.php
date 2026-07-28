@@ -14,16 +14,23 @@ $year = date('Y');
 
 // Helper query function for sums
 function get_val($conn, $sql, $types = '', ...$params) {
-    $stmt = $conn->prepare($sql);
-    if ($stmt) {
-        if ($types && !empty($params)) {
-            $stmt->bind_param($types, ...$params);
+    if (!$conn) return 0.0;
+    try {
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            if ($types && !empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            if ($stmt->execute()) {
+                $res = $stmt->get_result();
+                if ($res && $row = $res->fetch_row()) {
+                    $stmt->close();
+                    return (float)($row[0] ?? 0);
+                }
+            }
+            $stmt->close();
         }
-        $stmt->execute();
-        $val = $stmt->get_result()->fetch_row()[0] ?? 0;
-        $stmt->close();
-        return (float)$val;
-    }
+    } catch (\Throwable $t) {}
     return 0.0;
 }
 
@@ -94,6 +101,7 @@ $mode_card  = get_val($conn, "SELECT COALESCE(SUM(amount),0) FROM online_receipt
 $mode_wallet= get_val($conn, "SELECT COALESCE(SUM(amount),0) FROM online_receipts WHERE user_id=? AND payment_mode='Wallet'", 'i', $uid);
 
 // ---- Unified Recent Activity Timeline (Latest 10) ----
+$timeline_rows = [];
 $timeline_sql = "
     (SELECT 'Cash Receipt' as module, transaction_id, receipt_date as txn_date, description, amount, 'Completed' as status FROM cash_receipts WHERE user_id=?)
     UNION ALL
@@ -103,11 +111,16 @@ $timeline_sql = "
     UNION ALL
     (SELECT 'Online Payment' as module, transaction_id, payment_date, description, amount, 'Completed' as status FROM online_payments WHERE user_id=?)
     ORDER BY txn_date DESC LIMIT 10";
-$t_stmt = $conn->prepare($timeline_sql);
-$t_stmt->bind_param('iiii', $uid, $uid, $uid, $uid);
-$t_stmt->execute();
-$timeline_rows = $t_stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-$t_stmt->close();
+if ($t_stmt = $conn->prepare($timeline_sql)) {
+    $t_stmt->bind_param('iiii', $uid, $uid, $uid, $uid);
+    if ($t_stmt->execute()) {
+        $t_res = $t_stmt->get_result();
+        if ($t_res) {
+            $timeline_rows = $t_res->fetch_all(MYSQLI_ASSOC) ?: [];
+        }
+    }
+    $t_stmt->close();
+}
 
 $active_page = 'dashboard';
 ?>

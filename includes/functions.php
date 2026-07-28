@@ -146,14 +146,21 @@ function add_notification($conn, $user_id, $type, $title, $message) {
 }
 
 function get_unread_notifications_count($conn, $user_id) {
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM notifications WHERE user_id=? AND is_read=0");
-    if ($stmt) {
-        $stmt->bind_param('i', $user_id);
-        $stmt->execute();
-        $count = $stmt->get_result()->fetch_row()[0];
-        $stmt->close();
-        return $count;
-    }
+    if (!$conn) return 0;
+    try {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM notifications WHERE user_id=? AND is_read=0");
+        if ($stmt) {
+            $stmt->bind_param('i', $user_id);
+            if ($stmt->execute()) {
+                $res = $stmt->get_result();
+                if ($res && $row = $res->fetch_row()) {
+                    $stmt->close();
+                    return (int)($row[0] ?? 0);
+                }
+            }
+            $stmt->close();
+        }
+    } catch (\Throwable $t) {}
     return 0;
 }
 
